@@ -1,0 +1,4 @@
+[Project]
+Name=libarccos
+Manager=KDevCMakeManager
+VersionControl=kdevgit

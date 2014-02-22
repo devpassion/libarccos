@@ -1,0 +1,10 @@
+# fichiers à ignorer dans le dépot git
+# fichiers de sauvegarde
+*~
+# répertoire de build
+build
+build*
+#repertoire de l'EDI
+#*.kdev4
+.kdev4
+.directory

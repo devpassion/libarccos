@@ -8,9 +8,9 @@ cmake_minimum_required(VERSION 2.6)
 
 project(libarccos)
 
-add_executable(libarccos)
+# add_executable(libarccos)
 
-install(TARGETS libarccos RUNTIME DESTINATION bin)
+# install(TARGETS libarccos RUNTIME DESTINATION bin)
 
 add_subdirectory(src)
 

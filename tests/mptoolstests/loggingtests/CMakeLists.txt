@@ -1,0 +1,1 @@
+add_definitions( "-DTMP=build/tmp" )

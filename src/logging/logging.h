@@ -24,84 +24,89 @@
 #ifdef LOGGING
 #include <string>
 #include <iostream>
+#include "hexa.h"
+
+namespace arccos
+{
+    struct CTSLogObject {
+
+    template< typename T >
+    std::ostream& operator<<( const T& t ) const {
+        return std::cout << "[" << filename_ << ":" << linenumber_ << "] ";
+    }
+
+    CTSLogObject( std::string filename, const int linenumber, const unsigned short indent = 0 )
+        : filename_( filename ), linenumber_( linenumber ), indent_( indent )
+    {}
+
+    template<typename... Args>
+    void operator()(Args... args)
+    {
+        print(args...);
+    }
+
+    template<typename T>
+    void hexadump( std::ostream& os, const T* raw, size_t lenght, size_t max_line_lenght = 0  )
+    {
+        const unsigned char* d = reinterpret_cast<const unsigned char*>( raw );
+
+    //       for(unsigned int i = 0; i < lenght;i++)
+    //       {
+    //           os << std::dec << std::setw(2) << std::setfill('0') << i << " ";
+    //       }
+    //       os << '\n';
+
+        for(unsigned int i = 0; i < lenght;i++)
+        {
+            os << std::hex << std::setw(2) << std::setfill('0') << i << " ";
+        }
+        os << '\n';
+
+        for(unsigned int i = 0; i < lenght;i++)
+        {
+            os << std::hex << std::setw(2) << std::setfill('0') << static_cast<short>(d[i]) << " ";
+        }
+        os << '\n';
+        for(unsigned int i = 0; i < lenght;i++)
+        {
+            os << std::hex << std::setw(2) << std::setfill(' ') << ( ( d[i] >=32 && d[i] <= 126) ?  static_cast<char>(d[i]) : '.' ) << " ";
+        }
+
+        return os;
+    }
 
 
 
-struct CTSLogObject {
+    private:
+    template<typename... Args>
+    void print(Args&... args)
+    {
+    }
 
-  template< typename T >
-  std::ostream& operator<<( const T& t ) const {
-    return std::cout << "[" << filename_ << ":" << linenumber_ << "] ";
-  }
+    template<typename HEAD, typename... Args>
+    void print(HEAD& head, Args&... args)
+    {
+        std::cout << head;
+        operator()(args...);
+    }
 
-  CTSLogObject( std::string filename, const int linenumber, const unsigned short indent = 0 )
-    : filename_( filename ), linenumber_( linenumber ), indent_( indent )
-  {}
+    template<typename HEAD>
+    void print(HEAD& head)
+    {
+        std::cout << head; // << "\t\t(file:" << filename << ", line:" << linenumber << ")" << std::endl;
+        //std::cout << std::endl;
+    }
 
-  template<typename... Args>
-  void operator()(Args... args)
-  {
-      print(args...);
-  }
-
-  template<typename T>
-  void hexadump( std::ostream& os, const T* raw, size_t lenght, size_t max_line_lenght = 0  )
-  {
-      const unsigned char* d = reinterpret_cast<const unsigned char*>( raw );
-
-//       for(unsigned int i = 0; i < lenght;i++)
-//       {
-//           os << std::dec << std::setw(2) << std::setfill('0') << i << " ";
-//       }
-//       os << '\n';
-
-      for(unsigned int i = 0; i < lenght;i++)
-      {
-          os << std::hex << std::setw(2) << std::setfill('0') << i << " ";
-      }
-      os << '\n';
-
-      for(unsigned int i = 0; i < lenght;i++)
-      {
-          os << std::hex << std::setw(2) << std::setfill('0') << static_cast<short>(d[i]) << " ";
-      }
-      os << '\n';
-      for(unsigned int i = 0; i < lenght;i++)
-      {
-          os << std::hex << std::setw(2) << std::setfill(' ') << ( ( d[i] >=32 && d[i] <= 126) ?  static_cast<char>(d[i]) : '.' ) << " ";
-      }
-
-      return os;
-  }
+    std::string filename_;
+    int linenumber_;
+    unsigned short indent_;
+    };
 
 
 
-private:
-  template<typename... Args>
-  void print(Args&... args)
-  {
-  }
+    
 
-  template<typename HEAD, typename... Args>
-  void print(HEAD& head, Args&... args)
-  {
-    std::cout << head;
-    operator()(args...);
-  }
-
-  template<typename HEAD>
-  void print(HEAD& head)
-  {
-      std::cout << head; // << "\t\t(file:" << filename << ", line:" << linenumber << ")" << std::endl;
-      //std::cout << std::endl;
-  }
-
-  std::string filename_;
-  int linenumber_;
-  unsigned short indent_;
-};
-
-
+}
 
 #define LOG(...) CTSLogObject( __FILE__, __LINE__, 1 )( "\t", __VA_ARGS__)
 
@@ -114,6 +119,5 @@ private:
 #define LOG(...)
 #define TRACE(...)
 #endif
-
 
 #endif // LOGGING_H

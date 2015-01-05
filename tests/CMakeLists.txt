@@ -7,6 +7,7 @@
 
 function( make_test rep )
     file( GLOB_RECURSE source_files ${rep}/*.cpp )
+    add_subdirectory( ${rep} )
     add_executable(arccos_${rep}_tests  ${source_files} )
     add_test( ${rep} arccos_${rep}_tests )
     target_link_libraries(arccos_${rep}_tests cppunit)
@@ -14,8 +15,8 @@ function( make_test rep )
 endfunction(make_test)
 
 
-# Ajout de chaque répertoire
-make_test( "mptoolstests" )
+
+
 
 ## Options de compilation
 
@@ -29,6 +30,9 @@ add_definitions("-Wextra")
 # add_definitions("-march=native")  # optimisation pour la machine
 #add_definitions("-O3") # ou -Ofast pour désactiver le respect des standards stricts
 add_definitions("-O3") # debug
+
+# Ajout de chaque répertoire
+add_subdirectory( "mptoolstests" )
 
 # -------------------------
 

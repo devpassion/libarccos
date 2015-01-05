@@ -33,7 +33,7 @@ namespace arccos
         template<int I>
         struct StaticFunctor
         {
-            static const int value = I + 1;
+            enum : int { value = I + 1 };
         };
 
         template<unsigned int step, int begin, int end>

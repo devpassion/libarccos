@@ -4,6 +4,8 @@
 #
 ###################################
 
+include( CTest )
+enable_testing()
 
 function( make_test rep )
     file( GLOB_RECURSE source_files ${rep}/*.cpp )
@@ -13,10 +15,6 @@ function( make_test rep )
     target_link_libraries(arccos_${rep}_tests cppunit)
     add_dependencies( arccos_${rep}_tests libarccos )
 endfunction(make_test)
-
-
-
-
 
 ## Options de compilation
 

@@ -27,7 +27,7 @@ This library just install some headers files in the include directory.
 * $ git clone https://github.com/devpassion/libarccos
 * $ cd libarccos
 * $ mkdir build && cd build
-* $ cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release <libarccos_full_path>
+* $ cmake -DCMAKE\_INSTALL\_PREFIX=/usr/local -DCMAKE\_BUILD\_TYPE=Release &lt;libarccos\_full\_path&gt;
 * $ make && sudo make install
 
 Now, you can include header files like this:

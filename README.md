@@ -24,9 +24,21 @@ libarccos
 
 This library just install some headers files in the include directory.
 
+* $ git clone https://github.com/devpassion/libarccos
 * $ cd libarccos
-* $ cmake
-* $ ctest
+* $ mkdir build && cd build
+* $ cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release <libarccos_full_path>
+* $ make && sudo make install
+
+Now, you can include header files like this:
+
+`#include <arccos/logging/metalogging.h>`
+
+
+
+#### Execute tests
+
+* $ cd tests/mptoolstests && ctest
 
 
 

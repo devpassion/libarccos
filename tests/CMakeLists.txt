@@ -7,6 +7,14 @@
 include( CTest )
 enable_testing()
 
+find_library( CPPUNIT cppunit)
+
+if( CPPUNIT-NOTFOUND )
+  message( FATAL_ERROR "cppunit est introuvable" )
+endif(CPPUNIT-NOTFOUND )
+
+
+
 function( make_test rep )
     file( GLOB_RECURSE source_files ${rep}/*.cpp )
     add_subdirectory( ${rep} )

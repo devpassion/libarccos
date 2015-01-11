@@ -81,10 +81,6 @@ namespace arccos
 
             using GetArrayHelper = GetArrayHelper_<begin, I...>;
 
-
-            template<typename T>
-            struct FRT;
-
         public:
 
 

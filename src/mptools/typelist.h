@@ -82,18 +82,18 @@ namespace mpltools
         enum { size = 1 + TAIL::size };
 
         template<typename T>
-        using Contain = typename std::conditional<
+        using Contains = typename std::conditional<
                         std::conditional<
                             std::is_same<T,HEAD>::value, 
                             std::true_type, 
                             std::false_type
-                        >::type::value || TAIL::template Contain<T>::value,
+                        >::type::value || TAIL::template Contains<T>::value,
                         std::true_type, 
                         std::false_type
                     >::type;
 	
         using RemoveDuplicates = typename std::conditional<
-                                            TAIL::template Contain<HEAD>::value,
+                                            TAIL::template Contains<HEAD>::value,
                                             typename TAIL::RemoveDuplicates,
                                             typename Cons<HEAD, typename TAIL::RemoveDuplicates>::type
                                         >::type;
@@ -168,7 +168,7 @@ namespace mpltools
 	enum { size = 0 };
 	
 	template<typename T>
-	using Contain = std::false_type;
+	using Contains = std::false_type;
 	
 	using RemoveDuplicates = Typelist<>;
 	

@@ -6,6 +6,7 @@ libarccos
 
 #### Features
 
+* compile-time typelist : the famous typelist with an object-like syntax
 * Hexadecimal dump for std::string, raw string and arbitrary types (based on memory layout)
 * compile-time interval
     * create compile-time interval and apply meta operations to all elements

@@ -25,9 +25,6 @@
 #include "../../../src/logging/metalogging.h"
 #include "../../../src/logging/hexa.h"
 
-#ifndef TMP
-#error Directive TMP introuvable
-#endif
 
 namespace arccos
 {
@@ -52,7 +49,7 @@ namespace arccos
         std::clog.rdbuf( oldBuf );
             
         // for debug purpose
-        hexatools::hexadump(std::cout, buf.str() );
+        // hexatools::hexadump(std::cout, buf.str() );
         
         
         CPPUNIT_ASSERT( buf.str() == "[error] Err or 42\n[warning] Warn ing 42\n[info] In fo 42\n" );

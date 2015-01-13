@@ -28,6 +28,9 @@ namespace mpltools
     template<typename... Types>
     struct Typelist;
     
+    
+    /****** Typelist Cons ******/
+    
     template<typename... Types>
     struct Cons;
     
@@ -40,99 +43,121 @@ namespace mpltools
     template<typename HEAD, typename... Tailtypes>
     struct Cons<Typelist<Tailtypes...>, HEAD>
     {
-	using type = Typelist<Tailtypes..., HEAD>;
+        using type = Typelist<Tailtypes..., HEAD>;
     };
     
     
-    template<typename Typelist1>
-    struct Merge;
     
-    template<typename... Tailtypes1>
-    struct Merge<Typelist<Tailtypes1...>>
-    {
-	template<typename Typelist2>
-	struct MergeHelper;
-	
-	template<typename... Tailtypes2>
-	struct MergeHelper<Typelist<Tailtypes2...>>
-	{
-	    using type = Typelist<Tailtypes1..., Tailtypes2 >;
-	};
-    };
-    
-    
+        
     
     template<typename HEAD_, typename... TAIL_>
     struct Typelist<HEAD_, TAIL_...>
     {
-	using HEAD = HEAD_;
-	using TAIL = Typelist<TAIL_...>;
+        
+        private:
+        /****** Merge helpers ******/
+    
+        template<typename Typelist1>
+        struct MergeHelper;
+        
+        template<typename... Tailtypes1>
+        struct MergeHelper<Typelist<Tailtypes1...>>
+        {
+            template<typename Typelist2>
+            struct MergeHelper2;
+            
+            template<typename... Tailtypes2>
+            struct MergeHelper2<Typelist<Tailtypes2...>>
+            {
+                using type = Typelist<Tailtypes1..., Tailtypes2... >;
+            };
+        };
+        
+        
+    public:
+        
+        using HEAD = HEAD_;
+        using TAIL = Typelist<TAIL_...>;
+        
+        enum { size = 1 + TAIL::size };
+
+        template<typename T>
+        using Contain = typename std::conditional<
+                        std::conditional<
+                            std::is_same<T,HEAD>::value, 
+                            std::true_type, 
+                            std::false_type
+                        >::type::value || TAIL::template Contain<T>::value,
+                        std::true_type, 
+                        std::false_type
+                    >::type;
 	
-	enum { size = 1 + TAIL::size };
+        using RemoveDuplicates = typename std::conditional<
+                                            TAIL::template Contain<HEAD>::value,
+                                            typename TAIL::RemoveDuplicates,
+                                            typename Cons<HEAD, typename TAIL::RemoveDuplicates>::type
+                                        >::type;
+
+        template<typename T>
+        using Erase = typename std::conditional<
+                                std::is_same<T,HEAD>::value, 
+                                typename TAIL::template Erase<T>,
+                                typename Cons<HEAD, typename TAIL::template Erase<T> >::type
+                            >::type;
 	
-	template<typename T>
-	using Contain = std::conditional<
-			    std::conditional<
-				std::is_same<T,HEAD>, 
-				true_Type, 
-				false_type
-			    >::value || TAIL::Contain<T>::value,
-			    std::true_Type, 
-			    std::false_type
-			>::type;
+        template<typename T>
+        using Index = typename std::conditional<
+                            std::is_same<T,HEAD>::value, 
+                            std::integral_constant<int, 0>,
+                            
+                            typename std::conditional<
+                                TAIL::size != 0,
+                                std::integral_constant<int, 1 + TAIL::template Index<T>::value>,
+                                std::integral_constant<int,-1>
+                            >::type
+                        >::type;
+        
+        using Reverse = typename Cons<HEAD, typename TAIL::Reverse>::type;
+        
+        template<typename... Types>
+        using Equal = typename std::conditional<
+                        std::is_same< Typelist<HEAD_, TAIL_...>, Typelist<Types...>  >::value,
+                        std::true_type,
+                        std::false_type
+                        >::type;
+        
+        
+        template<typename... Types>
+        using AddQueue = Typelist<HEAD, TAIL_..., Types...>;
+        
+        
+        
+        template<typename... Types>
+        using AddHead = Typelist<Types..., HEAD, TAIL_...>;
+        
+        
+    
+        
+        template<typename Old, typename New>
+        using Replace = typename std::conditional<
+                                    std::is_same<Old, HEAD>::value,
+                                    typename Cons<New, typename TAIL::template Replace<Old, New> >::type,
+                                    typename Cons<HEAD, typename  TAIL::template Replace<Old, New> >::type
+                                >::type;
+        
+        template<typename TypelistToAdd>
+        using Merge = typename MergeHelper<Typelist<HEAD, TAIL_...>>::template MergeHelper2<TypelistToAdd>::type;
+        
+        
+        /*
+        template<template<class> Sorter>
+        using Sort = ToImpl;
+        */
 	
-	using RemoveDuplicates = std::conditional<
-			    TAIL::Contain<HEAD>,
-			    TAIL::RemoveDuplicates,
-			    Cons<HEAD, TAIL::RemoveDuplicates>::type
-			>::type;
-	
-	template<typename T>
-	using Erase = std::conditional<
-			    std::is_same<T,HEAD>, 
-			    TAIL::Erase<T>,
-			    Cons<HEAD, TAIL::Erase<T>::type >
-			>::type;
-			
-	template<typename T>
-	using Index = std::conditional<
-			    std::is_same<T,HEAD>, 
-			    std::integral_constant<int, 0>,
-			    std::integral_constant<int, 1 + TAIL::Index<T>::value>
-			>::type;
-	
-	using Reverse = Cons<HEAD, TAIL::Reverse>::type;
-	
-	
-	template<typename... Types>
-	using AddQueue = Typelist<HEAD, TAIL_..., Types...>;
-	
-	template<typename... Types>
-	using AddHead = Typelist<Types..., HEAD, TAIL_...>;
-	
-	template<typename Typelist2>
-	struct Merge;
-	
-	template<typename... Types>
-	struct Merge<Typelist<Types...>>
-	{
-	    using type = Typelist<HEAD, TAIL_..., Types...>;
-	};
-	
-	
-	template<typename Old, typename New>
-	using Replace = std::conditional<
-			    std::is_same<Old, HEAD>::value,
-			    Cons<New, TAIL::Replace<Old, New> >::type,
-			    Cons<HEAD, TAIL::Replace<Old, New> >::type
-			>::type;
-	
-	
-	template<template<class> Sorter>
-	using Sort = ToImpl;
-	
-	
-    private:
+    
+    
+        
+        /*******************************/
 	
 	
     };
@@ -150,12 +175,21 @@ namespace mpltools
 	template<typename T>
 	using Erase = Typelist<>;
 	
-	template<typename T>
+    template<typename T>
+    using Index = std::integral_constant<int, -1>;
+    
 	using Reverse = Typelist<>;
 	
 	template<typename Old, typename New>
 	using Replace = Typelist<>;
 	
+    
+    template<typename... Types>
+    using Equal = typename std::conditional<
+                    sizeof...(Types) == 0,
+                    std::true_type,
+                    std::false_type
+                    >::type;
 	
 	template<typename Typelist2>
 	struct Merge;

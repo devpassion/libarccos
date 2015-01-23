@@ -35,6 +35,7 @@ namespace arccos
         {
             enum : int { value = I + 1 };
         };
+        
 
         template<unsigned int step, int begin, int end>
         struct IntervalTest

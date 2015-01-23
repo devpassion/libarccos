@@ -97,7 +97,17 @@ namespace mpltools
                                             typename TAIL::RemoveDuplicates,
                                             typename Cons<HEAD, typename TAIL::RemoveDuplicates>::type
                                         >::type;
-
+        template<typename T, int Index_>
+        using Insert = typename std::conditional<
+                                0 == Index_,
+                                typename Cons<T, HEAD, TAIL >::type,
+                                typename std::conditional<
+                                    TAIL::size != 0,
+                                    typename Cons<HEAD, typename TAIL::template Insert<T, Index_ - 1> >::type,
+                                    Typelist<HEAD,T>
+                                >
+                            >::type;
+                                        
         template<typename T>
         using Erase = typename std::conditional<
                                 std::is_same<T,HEAD>::value, 
@@ -149,10 +159,14 @@ namespace mpltools
         using Merge = typename MergeHelper<Typelist<HEAD, TAIL_...>>::template MergeHelper2<TypelistToAdd>::type;
         
         
-        /*
-        template<template<class> Sorter>
-        using Sort = ToImpl;
-        */
+        
+//         template<template<class> class Sorter>
+//         using Sort = typename std::conditional<
+//                                     Sorter<HEAD, TAIL>::value,
+//                                     typename Cons<New, typename TAIL::template Replace<Old, New> >::type,
+//                                     typename Cons<HEAD, typename  TAIL::template Replace<Old, New> >::type
+//                                 >::type;
+        
 	
     
     
@@ -165,50 +179,57 @@ namespace mpltools
     template<>
     struct Typelist<>
     {
-	enum { size = 0 };
-	
-	template<typename T>
-	using Contains = std::false_type;
-	
-	using RemoveDuplicates = Typelist<>;
-	
-	template<typename T>
-	using Erase = Typelist<>;
-	
-    template<typename T>
-    using Index = std::integral_constant<int, -1>;
-    
-	using Reverse = Typelist<>;
-	
-	template<typename Old, typename New>
-	using Replace = Typelist<>;
-	
-    
-    template<typename... Types>
-    using Equal = typename std::conditional<
-                    sizeof...(Types) == 0,
-                    std::true_type,
-                    std::false_type
-                    >::type;
-	
-	template<typename Typelist2>
-	struct Merge;
-	
-	template<typename... Types>
-	struct Merge<Typelist<Types...>>
-	{
-	    using type = Typelist<Types...>;
-	};
-	
-	template<typename... Types>
-	using AddQueue = Typelist<Types...>;
-	
-	template<typename... Types>
-	using AddHead = Typelist<Types...>;
-	
-    };
-    
-    
+        enum { size = 0 };
+        
+        template<typename T>
+        using Contains = std::false_type;
+        
+        using RemoveDuplicates = Typelist<>;
+        
+        template<typename T>
+        using Erase = Typelist<>;
+        
+        template<typename T>
+        using Index = std::integral_constant<int, -1>;
+        
+        using Reverse = Typelist<>;
+        
+        template<typename Old, typename New>
+        using Replace = Typelist<>;
+        
+        
+        template<typename... Types>
+        using Equal = typename std::conditional<
+                        sizeof...(Types) == 0,
+                        std::true_type,
+                        std::false_type
+                        >::type;
+        
+        template<typename Typelist2>
+        struct Merge;
+        
+        template<typename... Types>
+        struct Merge<Typelist<Types...>>
+        {
+            using type = Typelist<Types...>;
+        };
+        
+        template<typename... Types>
+        using AddQueue = Typelist<Types...>;
+        
+        template<typename... Types>
+        using AddHead = Typelist<Types...>;
+        
+        template<typename T, unsigned int Index>
+        using Insert = Typelist<T>;
+        
+        };
+        
+        
+        
+        
+//         template<typename T>
+//         using Insert<T,0> = 
     
 }
 

@@ -56,6 +56,13 @@ namespace arccos
             auto C = GetArrayHelper<make_interval<0,8,1>::type::set>::getArray(myF);
             auto D = GetArrayHelper<make_interval<0,8,1>::type::set>::getArray(lambda);
 
+            
+            
+            
+            auto F = make_interval<0,10,2>::type::ToStaticArray<double,StaticFunctor>::ARR;
+            
+            PRINT_ARR( (F) );
+            
             CPPUNIT_ASSERT(( B[0] == 1 ));
             CPPUNIT_ASSERT(( B[8] == 9 ));
             CPPUNIT_ASSERT(( C[0] == 1 ));
@@ -66,7 +73,10 @@ namespace arccos
             CPPUNIT_ASSERT(( D[0] == 2 ));
             CPPUNIT_ASSERT(( D[8] == 10 ));
 
-
+            for(int k = 0; k <= 5; k++)
+            {
+                CPPUNIT_ASSERT(( F[k] == 2*k+1 ));
+            }
 
         };
     }

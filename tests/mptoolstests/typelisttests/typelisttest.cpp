@@ -29,6 +29,9 @@ using namespace mpltools;
 
 #define SASSERT(x) static_assert( (x), #x );
 
+template<int Number>
+struct Print;
+
 void TypelistTest::testTypelist()
 {
 	SASSERT( (Typelist<int, double>::size == 2 ) );
@@ -59,6 +62,12 @@ void TypelistTest::testTypelist()
     SASSERT(( Typelist<int, float>::Merge<Typelist<>>::Equal<int, float>::value ));
     
     SASSERT(( Typelist<int, float>::Merge<Typelist<double, double>>::Equal<int, float, double, double>::value ));
+    
+    
+    SASSERT(( Typelist<int, float, double>::SortedInsert<SizeSorter, double>::Equal<int, float, double, double>::value ));
+    
+    SASSERT(( Typelist<int, double, short>::Sort<SizeSorter>::Equal<short, int, double>::value ));
+    
     
 	//static_assert( false, "fail on test end");
 }

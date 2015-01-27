@@ -37,7 +37,7 @@ namespace mpltools
     template<typename HEAD, typename... Tailtypes>
     struct Cons<HEAD, Typelist<Tailtypes...>>
     {
-	using type = Typelist<HEAD, Tailtypes...>;
+        using type = Typelist<HEAD, Tailtypes...>;
     };
     
     template<typename HEAD, typename... Tailtypes>
@@ -79,7 +79,7 @@ namespace mpltools
         using HEAD = HEAD_;
         using TAIL = Typelist<TAIL_...>;
         
-        enum { size = 1 + TAIL::size };
+        static constexpr unsigned int size = 1 + TAIL::size;
 
         template<typename T>
         using Contains = typename std::conditional<
@@ -159,27 +159,31 @@ namespace mpltools
         using Merge = typename MergeHelper<Typelist<HEAD, TAIL_...>>::template MergeHelper2<TypelistToAdd>::type;
         
         
+        /**
+         * Sort operation.
+         *
+         * Sorter<A,B>::value == true if A >= B, false overwise  
+         **/
+        template<template<class, class> class Sorter>
+        using Sort = typename TAIL::template Sort<Sorter>::template SortedInsert<Sorter, HEAD>;
         
-//         template<template<class> class Sorter>
-//         using Sort = typename std::conditional<
-//                                     Sorter<HEAD, TAIL>::value,
-//                                     typename Cons<New, typename TAIL::template Replace<Old, New> >::type,
-//                                     typename Cons<HEAD, typename  TAIL::template Replace<Old, New> >::type
-//                                 >::type;
-        
-	
+        template<template<class, class> class Sorter, typename T>
+        using SortedInsert = typename std::conditional<
+                                    Sorter<T, HEAD>::value,
+                                    typename Cons<HEAD, typename TAIL::template SortedInsert<Sorter, T>>::type,
+                                    Typelist<T, HEAD, TAIL_...>
+                                >::type;
     
-    
-        
+
         /*******************************/
-	
+	 
 	
     };
     
     template<>
     struct Typelist<>
     {
-        enum { size = 0 };
+        static constexpr unsigned int size = 0;
         
         template<typename T>
         using Contains = std::false_type;
@@ -205,6 +209,9 @@ namespace mpltools
                         std::false_type
                         >::type;
         
+        template<template<class, class> class Sorter>
+        using Sort = Typelist<>;
+                        
         template<typename Typelist2>
         struct Merge;
         
@@ -223,7 +230,10 @@ namespace mpltools
         template<typename T, unsigned int Index>
         using Insert = Typelist<T>;
         
-        };
+        template<template<class, class> class Sorter, typename T>
+        using SortedInsert = Typelist<T>;
+        
+    };
         
         
         

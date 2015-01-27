@@ -25,12 +25,18 @@
 
 namespace arccos {
 
+    template<typename A, typename B>
+    struct SizeSorter
+    {
+        static constexpr bool value = ( sizeof(A) >= sizeof(B) );
+    };
+    
     class TypelistTest : public CppUnit::TestFixture
     {
 	public:
-	static CppUnit::TestSuite* suite();
+        static CppUnit::TestSuite* suite();
 
-	void testTypelist();
+        void testTypelist();
     };
 }
 

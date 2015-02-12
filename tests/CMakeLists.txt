@@ -39,6 +39,7 @@ add_definitions("-O3") # debug
 
 # Ajout de chaque répertoire
 add_subdirectory( "mptoolstests" )
+add_subdirectory( "structstests" )
 
 # -------------------------
 

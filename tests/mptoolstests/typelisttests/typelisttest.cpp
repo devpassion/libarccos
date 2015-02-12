@@ -29,8 +29,7 @@ using namespace mpltools;
 
 #define SASSERT(x) static_assert( (x), #x );
 
-template<int Number>
-struct Print;
+
 
 void TypelistTest::testTypelist()
 {
@@ -69,7 +68,6 @@ void TypelistTest::testTypelist()
     SASSERT(( Typelist<int, double, short>::Sort<SizeSorter>::Equal<short, int, double>::value ));
     
     
-	//static_assert( false, "fail on test end");
 }
 
 

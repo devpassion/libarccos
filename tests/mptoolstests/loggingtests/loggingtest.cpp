@@ -22,12 +22,47 @@
 
 
 #include "loggingtest.h"
-#include "../../../src/logging/metalogging.h"
-#include "../../../src/logging/hexa.h"
+#include "logging/metalogging.h"
+#include "logging/hexa.h"
 
 
 namespace arccos
 {
+    
+    
+    class X
+    {
+        const int x_;
+    public:
+        
+        X( int x ) : x_(x) {}
+        X( const X& other) = delete;
+        X& operator=( const X& other) = delete;
+        X( X&& other ) : x_(other.x_) { }
+        
+        friend std::ostream& operator<<( std::ostream& os, const X& x )
+        {
+            return os << x.x_ << std::endl;
+        }
+    };
+
+    class Y
+    {
+        const int y_;
+    public:
+        
+        Y( int y ) : y_(y) {}
+        Y( const Y& other) = delete;
+        Y& operator=( const X& other) = delete;
+        Y( Y&& other ) = delete;
+        
+        friend std::ostream& operator<<( std::ostream& os, const Y& y )
+        {
+            return os << y.y_ << std::endl;
+        }
+    };
+    
+    
     CppUnit::TestSuite* LoggingTest::suite()
     {
         CppUnit::TestSuite* suite = new CppUnit::TestSuite("LoggingTest");
@@ -46,8 +81,20 @@ namespace arccos
         Logger::debug("Deb", "ug", 42);
         Logger::trace("Tra", "ce", 42);
         
+        
+        X x(0);
+        Logger::trace(x);
+        Logger::trace(X(1));
+        
+        Y y(0);
+        Logger::trace(y);
+        
+        Logger::trace(Y(1));
+        
         std::clog.rdbuf( oldBuf );
-            
+    
+
+        
         // for debug purpose
         // hexatools::hexadump(std::cout, buf.str() );
         

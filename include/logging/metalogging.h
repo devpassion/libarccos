@@ -31,7 +31,7 @@
 
 
 #define PRINT( LEVEL ) template<typename... Args> \
-	static void LEVEL(Args... args) \
+	static void LEVEL(Args&&... args) \
 	{ \
 	Logger_<Level::LEVEL>::log( "[" #LEVEL "]", args...); \
 	}; 
@@ -64,34 +64,34 @@
 			struct PrintLogger
 			{
 				template<typename Arg, typename... Args>
-				void operator()(Arg arg, Args... args)
+				void operator()(Arg&& arg, Args&&... args)
 				{
-					std::clog << arg << ' ';
-					operator()(args...);
+					std::clog << std::forward<Arg&&>( arg ) << ' ';
+					operator()(std::forward<Args&&>(args)...);
 				};
 				
 				template<typename Arg>
-				void operator()(Arg arg)
+				void operator()(Arg&& arg)
 				{
-					std::clog << arg << std::endl;
+					std::clog << std::forward<Arg&&>( arg ) << std::endl;
 				};
 			};
 			
 			struct NoPrintLogger
 			{
-			
-			template<typename Arg, typename... Args>
-			void operator()(Arg arg, Args... args)
-			{
-				UNUSED( arg );
-				operator()(args...);
-			};
-			
-			template<typename Arg>
-			void operator()(Arg arg)
-			{
-				UNUSED( arg );
-			};
+
+                template<typename Arg, typename... Args>
+                void operator()(Arg&& arg, Args&&... args)
+                {
+                    UNUSED( std::forward<Arg&&>( arg ) );
+                    operator()(std::forward<Args&&>( args )...);
+                };
+                
+                template<typename Arg>
+                void operator()(Arg&& arg)
+                {
+                    UNUSED( std::forward<Arg&&>( arg ) );
+                };
 			};
 			
 			enum { logLevel = LOGLEVEL };
@@ -101,9 +101,9 @@
 		public:
 			
 			template<typename... Args>
-			static inline void log(Args... args)
+			static inline void log(Args&&... args)
 			{
-				PrinterType{}(args...);
+				PrinterType{}( std::forward<Args&&>( args )...);
 			};
 		};
 	    

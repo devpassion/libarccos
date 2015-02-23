@@ -17,10 +17,12 @@
  *
  */
 
+#include <vector>
+
 #include "graphtest.h"
 #include <cppunit/TestCaller.h>
 
-#include "../../../src/structs/graph.h"
+#include "structs/graph.h"
 
 using namespace arccos::structs;
 
@@ -28,23 +30,37 @@ using namespace arccos::structs;
 void GraphTest::testgraph()
 {
     Graph<int, char> g;
-    for( int i = 0; i < 10; i++ )
+    for (int i = 0; i < 10; i++)
     {
-        g.addNode( i );
+        g.addNode(i);
     }
-    g.addEdge( 1,2, 'c' );
-    g.addEdge( 1,3, 'b' );
-    g.addEdge( 4,2, 'd' );
-    g.addEdge( 5,7, 'e' );
-    g.addEdge( 7,8, 'f' );
-    g.addEdge( 0,9, 'g' );
-    
+    g.addEdge(1, 2, 'c');
+    g.addEdge(1, 3, 'b');
+    g.addEdge(2, 3, 'b');
+    g.addEdge(3, 4, 'b');
+    g.addEdge(4, 5, 'b');
+
+    g.addEdge(4, 2, 'd');
+    g.addEdge(5, 7, 'e');
+    g.addEdge(7, 8, 'f');
+    g.addEdge(0, 9, 'g');
+
+    g.updateCC();
+
+    std::vector<Path<int, char>> pathes = g.getBestPathes(1, 5);
+
+    for (auto it = pathes.begin(); it != pathes.end(); it++)
+    {
+        std::cout << *it << std::endl;
+    }
+
+
 }
 
 
-CppUnit::TestSuite* GraphTest::suite()
+CppUnit::TestSuite *GraphTest::suite()
 {
-	CppUnit::TestSuite* suite = new CppUnit::TestSuite("GraphTest");
-    suite->addTest(new CppUnit::TestCaller<GraphTest>("testLogging", &GraphTest::testgraph));
+    CppUnit::TestSuite *suite = new CppUnit::TestSuite("GraphTest");
+    suite->addTest(new CppUnit::TestCaller<GraphTest>("testGraph", &GraphTest::testgraph));
     return suite;
 }

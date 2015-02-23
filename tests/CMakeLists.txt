@@ -26,8 +26,8 @@ endfunction(make_test)
 
 ## Options de compilation
 
-## Obligatoire, active le standard c++11
-add_definitions("-std=c++11")
+## Obligatoire, active le standard c++11 (ou 14)
+add_definitions("-std=c++14")
 ## messages du compilateur
 add_definitions("-Wall")
 add_definitions("-Wextra")
@@ -35,11 +35,13 @@ add_definitions("-Wextra")
 ## Optimisations
 # add_definitions("-march=native")  # optimisation pour la machine
 #add_definitions("-O3") # ou -Ofast pour désactiver le respect des standards stricts
-add_definitions("-O3") # debug
+add_definitions("-O0 -g") # debug
+
+# TODO: paramétrer avec une variable d'environnement
+add_definitions( "-DLOGLEVEL=2")
 
 # Ajout de chaque répertoire
 add_subdirectory( "mptoolstests" )
 add_subdirectory( "structstests" )
-
 # -------------------------
 

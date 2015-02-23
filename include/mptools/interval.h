@@ -1,6 +1,6 @@
 /*
- * <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2013  tim288 <email>
+ * this file is part of libarccos https://github.com/devpassion/libarccos 
+ * Copyright (C) 2015 Emmanuel Lacourarie git@lacourarie.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

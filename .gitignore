@@ -5,8 +5,9 @@
 build
 build*
 #repertoire de l'EDI
-#*.kdev4
+*.kdev4
 .kdev4
 .directory
 .idea
 Testing
+libarccos.kdev4

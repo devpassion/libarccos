@@ -96,14 +96,18 @@ using namespace arccos::structs;
         {
             NodeSet<NodeValueType_, EdgeType_> ns( this );
             const Node<NodeValueType_, EdgeType_>* aNode = an.getFirstNode();
-            // arccos::Logger::trace( "updateCC while, an.size() ==", an.size(), ", aNode == ", aNode->getValue()->getPosition()   );
+            arccos::Logger::trace( "updateCC while, an.size() ==", an.size(), ", aNode == ", aNode->getValue() );
+
+            this->connexesComposants_[ aNode->getValue()] = color;
             ns.add( *aNode );
             an.remove( *aNode );
-            while( 
-            ns.addNeighbours( [&an,this, color] ( const Node<NodeValueType_, EdgeType_>* node ) {
-                // arccos::Logger::trace( "updateCC lambda, ", node->getValue()->getPosition(), " ==> color(",color,")"  );
+            while(
+            ns.addNeighbours( [&an,this, color] ( const Node<NodeValueType_, EdgeType_>* node )
+            {
+                arccos::Logger::trace( "updateCC lambda, ", node->getValue(), " ==> color(",color,")"  );
                 this->connexesComposants_[ node->getValue()] = color;
                 an.remove( *node );
+                arccos::Logger::trace("remove ", node->getValue() ," ,( an.size() ==", an.size(), " )");
             } ) );
             color++;
             
@@ -122,18 +126,17 @@ using namespace arccos::structs;
     std::vector<Path<NodeValueType_, EdgeType_>>
     Graph<NodeValueType_, EdgeType_>::getBestPathes( const NodeValueType_& node1, const NodeValueType_& node2 ) const
     {
-        assert( node1 != node2 );
         std::vector<Path<NodeValueType_, EdgeType_>> ret;
         if( !areSameCC( node1, node2 ) )
         {
             Logger::debug("Not same CC");
-            ret.emplace_back( this );
             return ret;
         }
         Logger::trace("Same CC");
         if( node1 == node2 )
         {
             Logger::trace("nodes are equals");
+            // TODO : vérifier avant l'ajout qu'il existe un arc entre node1 et lui meme
             ret.emplace_back( this, &nodes_.at( node1 ) );
             return ret;
         }
@@ -145,7 +148,7 @@ using namespace arccos::structs;
         std::unordered_map<NodeValueType_, std::shared_ptr<const RecPath<NodeValueType_, EdgeType_>>> newLeftMap;
         
         // TODO : make emplace
-        
+
         std::shared_ptr<const RecPath<NodeValueType_, EdgeType_>> a1( new RecPath<NodeValueType_, EdgeType_> ( &nodes_.at( node1 ) ) );
         leftMap.insert( std::make_pair( node1, a1 ));
         
@@ -160,21 +163,16 @@ using namespace arccos::structs;
         visiteds.insert( &node2 );
         
         //std::vector<Graph<NodeValueType_, EdgeType_>::PathType> ret;
-        while( leftMap.size() > 0 && ret.size() == 0 && visiteds.size() < nodes_.size() )
+        while(  ret.size() == 0 && visiteds.size() < nodes_.size() )
         {
-            
-            std::unordered_set<const NodeValueType_*> addeds;
-            balance( ret, leftMap, rightMap, visiteds, addeds, newLeftMap );
-            
-            balance( ret, rightMap, leftMap, visiteds, addeds, newLeftMap );
-            visiteds.insert( addeds.begin(), addeds.end() );
-            
-            arccos::Logger::trace( "\tleftMap.size() == ", leftMap.size() );
-            for( auto it = leftMap.begin();it != leftMap.end();it++ )
-            {
-                arccos::Logger::trace( "control leftMap (after balance)" );
-                it->second->control();
-            }
+
+            std::unordered_set<const NodeValueType_*> lAddeds;
+            std::unordered_set<const NodeValueType_*> rAddeds;
+
+            balance( ret, leftMap, rightMap, visiteds, lAddeds, newLeftMap );
+            visiteds.insert( rAddeds.begin(), rAddeds.end() );
+            balance( ret, rightMap, leftMap, visiteds, rAddeds, newLeftMap );
+            visiteds.insert( lAddeds.begin(), lAddeds.end() );
         }
         
         return ret;
@@ -196,9 +194,7 @@ using namespace arccos::structs;
         for( auto it = leftMap.begin(); it != leftMap.end(); it++ )
         {
             arccos::Logger::debug( "\tIterattion sur noeud gauche : ", (it->second) );
-            it->second->control();
-            
-            
+
             /*std::vector<RecPath<NodeValueType_, EdgeType_>> bPathes;
             it->second->addNextPathes( bPathes );
             // pour chaque chemin suivant le noeud de gauche
@@ -259,6 +255,7 @@ using namespace arccos::structs;
         leftMap.clear();
         for( auto it = newLeftMap.begin();it != newLeftMap.end();it++ )
         {
+            Logger::trace("Add node : ", it->second->getHead()->getValue());
             leftMap.insert( *it );
         }
         //leftMap.swap( newLeftMap );

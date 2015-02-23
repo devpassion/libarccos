@@ -18,7 +18,7 @@
  */
 
 #include <vector>
-
+#include <chrono>
 #include "graphtest.h"
 #include <cppunit/TestCaller.h>
 
@@ -45,9 +45,20 @@ void GraphTest::testgraph()
     g.addEdge(7, 8, 'f');
     g.addEdge(0, 9, 'g');
 
+    std::cout << g << std::endl;
+
     g.updateCC();
 
+    // TODO : tiome of execution
+    //auto start = std::chrono::steady_clock::now();
+
     std::vector<Path<int, char>> pathes = g.getBestPathes(1, 5);
+
+    //auto end = std::chrono::steady_clock::now();
+
+    CPPUNIT_ASSERT( pathes.size() == 2);
+
+    //std::cout << "time : " << (end - start) << std::endl;
 
     for (auto it = pathes.begin(); it != pathes.end(); it++)
     {
@@ -58,9 +69,59 @@ void GraphTest::testgraph()
 }
 
 
+void GraphTest::testgraphCycles()
+{
+    Graph<int, char> g;
+    for (int i = 0; i <= 6; i++)
+    {
+        g.addNode(i);
+    }
+    g.addEdge(1, 2, 'c');
+    g.addEdge(1, 3, 'b');
+    g.addEdge(3, 3, 'b');
+    g.addEdge(3, 4, 'b');
+    g.addEdge(4, 5, 'b');
+    g.addEdge(5, 1, 'b');
+    g.addEdge(4, 2, 'b');
+    g.addEdge(4, 4, 'b');
+
+
+    std::cout << g << std::endl;
+
+    g.updateCC();
+
+    // TODO : tiome of execution
+    //auto start = std::chrono::steady_clock::now();
+
+
+    testPathes(g, 1, 4, 3);
+    testPathes(g, 0, 4, 0);
+    testPathes(g, 0, 6, 0);
+    testPathes(g, 3, 3, 1);
+
+    testPathes(g, 2, 3, 2);
+
+}
+
+template<typename NodeValueType_, typename EdgeType_>
+void GraphTest::testPathes( const Graph<NodeValueType_, EdgeType_>& g, NodeValueType_ begin, NodeValueType_ end, unsigned int waitedPathCount)
+{
+    std::cout << "Test best path from " << begin << " to " << end << std::endl;
+
+    std::vector<Path<NodeValueType_, EdgeType_>> pathes = g.getBestPathes(begin, end);
+
+    for (auto it = pathes.begin(); it != pathes.end(); it++)
+    {
+        std::cout << *it << std::endl;
+    }
+
+    CPPUNIT_ASSERT( pathes.size() == waitedPathCount);
+}
+
 CppUnit::TestSuite *GraphTest::suite()
 {
     CppUnit::TestSuite *suite = new CppUnit::TestSuite("GraphTest");
-    suite->addTest(new CppUnit::TestCaller<GraphTest>("testGraph", &GraphTest::testgraph));
+    //suite->addTest(new CppUnit::TestCaller<GraphTest>("testGraph", &GraphTest::testgraph));
+    suite->addTest(new CppUnit::TestCaller<GraphTest>("testGraphCycles", &GraphTest::testgraphCycles));
     return suite;
 }

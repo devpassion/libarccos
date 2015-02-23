@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
- 
+
 #ifndef METALOGGING
 #define METALOGGING
 
@@ -30,19 +30,19 @@
 #endif
 
 
-#define PRINT( LEVEL ) template<typename... Args> \
-	static void LEVEL(Args&&... args) \
-	{ \
-	Logger_<Level::LEVEL>::log( "[" #LEVEL "]", args...); \
-	}; 
+#define PRINT(LEVEL) template<typename... Args> \
+    static void LEVEL(Args&&... args) \
+    { \
+    Logger_<Level::LEVEL>::log( "[" #LEVEL "]", args...); \
+    };
 
 
- namespace arccos
- {
- 
+namespace arccos
+{
+
     /*
      * Niveaux de log
-     **/	
+     **/
     enum Level : int
     {
         error = 0,
@@ -52,73 +52,80 @@
         trace = 4
     };
 
-    
+
     class LoggerHandler;
-    
+
     class Logger
     {
-		
-		template<Level L >
-		class Logger_
-		{
-			struct PrintLogger
-			{
-				template<typename Arg, typename... Args>
-				void operator()(Arg&& arg, Args&&... args)
-				{
-					std::clog << std::forward<Arg&&>( arg ) << ' ';
-					operator()(std::forward<Args&&>(args)...);
-				};
-				
-				template<typename Arg>
-				void operator()(Arg&& arg)
-				{
-					std::clog << std::forward<Arg&&>( arg ) << std::endl;
-				};
-			};
-			
-			struct NoPrintLogger
-			{
+
+        template<Level L>
+        class Logger_
+        {
+            struct PrintLogger
+            {
+                template<typename Arg, typename... Args>
+                void operator()(Arg &&arg, Args &&... args)
+                {
+                    std::clog << std::forward<Arg &&>(arg) << ' ';
+                    operator()(std::forward<Args &&>(args)...);
+                };
+
+                template<typename Arg>
+                void operator()(Arg &&arg)
+                {
+                    std::clog << std::forward<Arg &&>(arg) << std::endl;
+                };
+            };
+
+            struct NoPrintLogger
+            {
 
                 template<typename Arg, typename... Args>
-                void operator()(Arg&& arg, Args&&... args)
+                void operator()(Arg &&arg, Args &&... args)
                 {
-                    UNUSED( std::forward<Arg&&>( arg ) );
-                    operator()(std::forward<Args&&>( args )...);
+                    UNUSED(std::forward<Arg &&>(arg));
+                    operator()(std::forward<Args &&>(args)...);
                 };
-                
+
                 template<typename Arg>
-                void operator()(Arg&& arg)
+                void operator()(Arg &&arg)
                 {
-                    UNUSED( std::forward<Arg&&>( arg ) );
+                    UNUSED(std::forward<Arg &&>(arg));
                 };
-			};
-			
-			enum { logLevel = LOGLEVEL };
-			
-			using PrinterType = typename std::conditional< (L <= static_cast<Level>( logLevel )) , PrintLogger, NoPrintLogger >::type;
-			
-		public:
-			
-			template<typename... Args>
-			static inline void log(Args&&... args)
-			{
-				PrinterType{}( std::forward<Args&&>( args )...);
-			};
-		};
-	    
-	public:
-	    PRINT( error )
-	    PRINT( warning )
-	    PRINT( info )
-	    PRINT( debug )
-	    PRINT( trace )
-	    
-		friend LoggerHandler;
-	    
+            };
+
+            enum
+            {
+                logLevel = LOGLEVEL
+            };
+
+            using PrinterType = typename std::conditional<(L <= static_cast<Level>( logLevel )), PrintLogger, NoPrintLogger>::type;
+
+        public:
+
+            template<typename... Args>
+            static inline void log(Args &&... args)
+            {
+                PrinterType{}(std::forward<Args &&>(args)...);
+            };
+        };
+
+    public:
+        PRINT(error)
+
+        PRINT(warning)
+
+        PRINT(info)
+
+        PRINT(debug)
+
+        PRINT(trace)
+
+        friend LoggerHandler;
+
     };
-	
-    
- }
- 
- #endif
+
+
+}
+
+#endif

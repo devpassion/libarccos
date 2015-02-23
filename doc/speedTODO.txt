@@ -1,9 +1,14 @@
 LOGGING
 
 Type associé au log
+opérateur <<
 
 STRUCTS
 Ajouter une politique de voisinage aux noeud (ie, plusieurs voisins ou seulement un parent)
 Creer un trait de graphe avec les types
 Système de gestion d'évènements
 Structure d'arbre
+
+
+OTHER
+fonction lancant une tache chronométrée

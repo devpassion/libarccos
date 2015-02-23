@@ -17,31 +17,14 @@
  *
  */
 
-#ifndef ARCCOS_GRAPHTEST_H
-#define ARCCOS_GRAPHTEST_H
+#include "structs/recpath.h"
+#include <cassert>
 
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestFixture.h>
-
-#include "structs/graph.h"
+using namespace arccos::structs;
 
 
-namespace arccos
-{
-    namespace structs
-    {
-        
-        
-        class GraphTest : public CppUnit::TestFixture
-        {
-        public:
-            static CppUnit::TestSuite* suite();
 
-            template<typename NodeValueType_, typename EdgeType_>
-            void testPathes( const Graph<NodeValueType_, EdgeType_>& g, NodeValueType_ begin, NodeValueType_ end, unsigned int waitedPathCount );
-            void testgraph();
-            void testgraphCycles();
-        };
-    }
-}
-#endif // ARCCOS_TYPELISTTEST_H
+
+
+
+

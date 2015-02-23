@@ -146,7 +146,7 @@ namespace arccos
             friend std::ostream &operator<<(std::ostream &os, const Graph<NodeValueType_, EdgeType_> &graph) {
                 os << "{[graph] ";
                 for (auto it = graph.edges_.begin(); it != graph.edges_.end(); it++) {
-                    os << it->first->getPosition() << " => " << it->second << ", ";
+                    os << it->first << " => " << it->second << ", ";
                 }
                 os << "}" << std::endl;
                 return os;

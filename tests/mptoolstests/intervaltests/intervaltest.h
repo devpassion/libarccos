@@ -23,7 +23,7 @@
 #include <array>
 #include <cppunit/TestFixture.h>
 #include <cppunit/TestSuite.h>
-#include "../../../src/mptools/interval.h"
+#include "mptools/interval.h"
 
 
 namespace arccos

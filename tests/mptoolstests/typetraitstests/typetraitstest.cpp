@@ -1,6 +1,6 @@
 /*
- * <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2015  <copyright holder> <email>
+ * libarccos
+ * Copyright (C) 2015 Emmanuel Lacourarie git@lacourarie.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,16 @@
 #include "typetraitstest.h"
 #include <cppunit/TestCaller.h>
 
-#include "../../../src/mptools/type_traits.h"
-
+#include "mptools/type_traits.h"
+#include "test/static.h"
 
 
 using namespace arccos;
 
-#define SASSERT(x) static_assert( (x), #x );
 
 
-template<typename T>
+
+    template<typename T>
     struct tpl1
     {
     };

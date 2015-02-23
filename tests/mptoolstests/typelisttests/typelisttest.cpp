@@ -20,14 +20,15 @@
 #include "typelisttest.h"
 #include <cppunit/TestCaller.h>
 
-#include "../../../src/mptools/typelist.h"
+#include "mptools/typelist.h"
 
+#include "test/static.h"
 
 
 using namespace arccos;
 using namespace mpltools;
 
-#define SASSERT(x) static_assert( (x), #x );
+
 
 
 

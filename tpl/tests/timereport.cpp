@@ -17,21 +17,25 @@
  *
  */
 
-#ifndef ARCCOS_TEST_STATIC_H
-#define ARCCOS_TEST_STATIC_H
+#include "test/timereport.h"
 
-#include <iostream>
-#include <functional>
+using namespace arccos::test;
 
-#define SASSERT(x) static_assert( (x), #x );
-
-
-#endif // ARCCOS_TEST_STATIC_H
+template<typename... FunctorTypes>
+TimeReport<FunctorTypes...>::TimeReport( std::function<void(FunctorTypes...)> functor ) : functor_(functor) {}
 
 
+template<typename... FunctorTypes>
+void TimeReport<FunctorTypes...>::start( std::ostream& os )
+{
+
+}
+
+template<typename... FunctorTypes>
+void TimeReport<FunctorTypes...>::kill(  )
+{
+
+}
 
 
 
-
-
-#define SASSERT(x) static_assert( (x), #x );

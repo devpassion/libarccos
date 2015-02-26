@@ -22,6 +22,7 @@ function( make_test rep )
     add_test( ${rep} arccos_${rep}_tests )
     target_link_libraries(arccos_${rep}_tests cppunit)
     add_dependencies( arccos_${rep}_tests libarccos )
+    add_dependencies( check arccos_${rep}_tests )
 endfunction(make_test)
 
 ## Options de compilation

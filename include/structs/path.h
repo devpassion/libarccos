@@ -24,8 +24,8 @@
 #include <vector>
 #include <ext/new_allocator.h>
 
-#include "node.h"
-#include "recpath.h"
+#include "structs/graph.h"
+#include "structs/recpath.h"
 
 namespace arccos
 {

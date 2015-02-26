@@ -121,7 +121,7 @@ void GraphTest::testPathes( const Graph<NodeValueType_, EdgeType_>& g, NodeValue
 CppUnit::TestSuite *GraphTest::suite()
 {
     CppUnit::TestSuite *suite = new CppUnit::TestSuite("GraphTest");
-    //suite->addTest(new CppUnit::TestCaller<GraphTest>("testGraph", &GraphTest::testgraph));
+    suite->addTest(new CppUnit::TestCaller<GraphTest>("testGraph", &GraphTest::testgraph));
     suite->addTest(new CppUnit::TestCaller<GraphTest>("testGraphCycles", &GraphTest::testgraphCycles));
     return suite;
 }

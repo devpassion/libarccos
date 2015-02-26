@@ -21,8 +21,7 @@
 
 #include "logging/metalogging.h"
 
-#include "structs/node.h"
-#include "structs/nodeset.h"
+#include "structs/graph.h"
 
 
 using namespace arccos::structs;

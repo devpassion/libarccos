@@ -14,6 +14,12 @@ project(libarccos)
 ENABLE_TESTING()
 INCLUDE(CTest)
 
+
+FILE (GLOB_RECURSE clion_all_headers ${CMAKE_SOURCE_DIR}/*)
+ADD_CUSTOM_TARGET(all_clion
+    SOURCES ${clion_all_headers}
+)
+
 # Pas d'éxecutable
 # add_executable(libarccos )
 # install(TARGETS libarccos RUNTIME DESTINATION bin)
@@ -26,10 +32,11 @@ add_subdirectory( doc )
 
 add_subdirectory(include)
 
+add_subdirectory( tpl )
 
 add_subdirectory( tests )
 
-add_subdirectory( tpl )
+
 
 
 # -------------------------

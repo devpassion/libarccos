@@ -40,6 +40,16 @@ namespace arccos
     namespace structs
     {
 
+        /**
+        * Cette classe représente un graphe non orienté.
+        *
+        * Elle est adaptée aux graphes aux nombres restreints de noeuds (par exemple pour représenter les cases d'un
+        * plateau de jeu) et optimisée pour la recherche rapide de chemin avec une mise à jour régulière (typiquement
+        * un tour de jeu).
+        *
+        * \tparam NodeValueType_ type du noeud des graphes, stocké par valeur
+        * \tparam EdgeType_ type des valeurs d'arcs
+        */
         template<typename NodeValueType_, typename EdgeType_>
         class Graph
         {
@@ -79,14 +89,28 @@ namespace arccos
 
         public:
 
+            /**
+            * Met à jour le cache des composantes connexes après une modification.
+            */
             void updateCC() const;
 
+            /**
+            * Met à jour le cache des chemins
+            *
+            * Cette opération vérifie si un chemin présent dans le cache des chemins est obsolète.
+            * TODO : doit elle etre const ? doit elle etre publique?
+            */
             void updatePathCache() const;
 
+            /**
+            * Construit un graphe sans noeuds
+            */
             Graph() {
             }
 
+
             Graph(const Graph &other) = delete;
+
 
             Graph(const Graph &&other);
 
@@ -97,39 +121,84 @@ namespace arccos
 
             bool operator==(const Graph &other) const = delete;
 
+            /**
+            * Récupère un Nodeset vide associé à ce graphe
+            *
+            */
             NodeSet<NodeValueType_, EdgeType_> newNodeSet() const;
 
+            /**
+            * Récupère le nodeset contenant tous les noeuds du graphe
+            */
             NodeSet<NodeValueType_, EdgeType_> allNodeSet() const;
 
 
-            const Node <NodeValueType_, EdgeType_> &getNode(const NodeValueType_ &nodeValue) const {
+            /**
+            * récupère le noeud dont la valeur est celle spécifiée
+            * @param[in] nodeValue Valeur du noeud recherché
+            * @throw out_of_range : levée si la valeur ne correspond pas à un noeud
+            * TODO : ajouter une fonction de vérification d'existance
+            */
+            const Node <NodeValueType_, EdgeType_> &getNode(const NodeValueType_ &nodeValue) const
+            {
                 return nodes_.at(nodeValue);
             }
 
-            void addNode(const NodeValueType_ &nodeValue);
 
-            void addNode(NodeValueType_ &&nodeValue);
+            /**
+            * Ajoute un noeud au graphe. Sans effet si le noeud existe déjà.
+            * @param nodeValue valeur du nouveau noeud.
+            */
+            void addNode(const NodeValueType_& nodeValue);
 
-            void removeNode(NodeValueType_ &nodeValue);
+            /**
+            * Ajoute un noeud au graphe. Sans effet si le noeud existe déjà.
+            * @param nodeValue valeur du nouveau noeud.
+            */
+            void addNode(NodeValueType_&& nodeValue);
 
-            void removeNode(NodeValueType_ &&nodeValue);
+            /**
+            * Supprime un noeud du graphe.
+            * TODO : temps x^2
+            */
+            void removeNode(NodeValueType_& nodeValue);
+
+            void removeNode(NodeValueType_&& nodeValue);
 
 
+            /**
+            * Ajoute un arc entre 2 noeuds
+            */
             void addEdge(typename std::add_lvalue_reference<NodeValueType_>::type node1,
                     typename std::add_lvalue_reference<NodeValueType_>::type node2, EdgeType_ edgeValue);
 
+            /**
+            * Ajoute un arc entre 2 noeuds
+            */
             void addEdge(typename std::add_rvalue_reference<NodeValueType_>::type node1,
                     typename std::add_rvalue_reference<NodeValueType_>::type node2, EdgeType_ edgeValue);
 
+            /**
+            * Supprime un arc
+            */
             void removeEdge(NodeValueType_ &node1, NodeValueType_ &node2);
 
+            /**
+            * Supprime les arcs dont la valeur d'arc est celle spécifiée
+            */
             void removeEdges(EdgeType_ edgeValue);
 
+            /**
+            * renvoie le nombre de noeuds du graphe
+            */
             size_t size() const;
 
 
             /**********/
 
+            /**
+            * Indique si 2 noeuds font partie de la meme composante connexe
+            */
             bool areSameCC(const NodeValueType_ &node1, const NodeValueType_ &node2) const;
 
 
@@ -142,6 +211,10 @@ namespace arccos
             Path<NodeValueType_, EdgeType_> getBestPath(const NodeValueType_ &node1, const NodeValueType_ &node2) const;
 
 
+            /**
+            * renvoie tous les chemins les plus courts entre 2 noeuds.
+            * TODO : définir précisément le comportement
+            */
             std::vector<arccos::structs::Path<NodeValueType_, EdgeType_>> getBestPathes(const NodeValueType_& node1, const NodeValueType_& node2) const;
 
             friend std::ostream &operator<<(std::ostream &os, const Graph<NodeValueType_, EdgeType_> &graph) {

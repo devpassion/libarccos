@@ -42,7 +42,7 @@ using namespace arccos::structs;
     
     
     template<typename NodeValueType_, typename EdgeType_>
-    void Graph<NodeValueType_, EdgeType_>::addEdge( typename std::add_lvalue_reference<NodeValueType_>::type node1, 
+    void Graph<NodeValueType_, EdgeType_>::addEdge( typename std::add_lvalue_reference<NodeValueType_>::type node1,
                                                typename std::add_lvalue_reference<NodeValueType_>::type node2, EdgeType_ edgeValue )
     {
         edges_.at(node1).add( node2 );
@@ -52,7 +52,7 @@ using namespace arccos::structs;
     }
     
     template<typename NodeValueType_, typename EdgeType_>
-    void Graph<NodeValueType_, EdgeType_>::addEdge( typename std::add_rvalue_reference<NodeValueType_>::type node1, 
+    void Graph<NodeValueType_, EdgeType_>::addEdge( typename std::add_rvalue_reference<NodeValueType_>::type node1,
                                                typename std::add_rvalue_reference<NodeValueType_>::type node2, EdgeType_ edgeValue )
     {
         edges_.at(node1).add( std::move( node2 ) );
@@ -114,7 +114,7 @@ using namespace arccos::structs;
         }
     }
 
-    
+
     template<typename NodeValueType_, typename EdgeType_>
     bool Graph<NodeValueType_, EdgeType_>::areSameCC ( const NodeValueType_& node1, const NodeValueType_& node2 ) const
     {
@@ -252,13 +252,7 @@ using namespace arccos::structs;
         }
 
         // La map de gauche devient le set visité
-        leftMap.clear();
-        for( auto it = newLeftMap.begin();it != newLeftMap.end();it++ )
-        {
-            Logger::trace("Add node : ", it->second->getHead()->getValue());
-            leftMap.insert( *it );
-        }
-        //leftMap.swap( newLeftMap );
+        leftMap.swap( newLeftMap );
         
         arccos::Logger::debug( "END balance" );    
     }

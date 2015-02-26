@@ -36,7 +36,7 @@ add_definitions("-Wextra")
 ## Optimisations
 # add_definitions("-march=native")  # optimisation pour la machine
 #add_definitions("-O3") # ou -Ofast pour désactiver le respect des standards stricts
-add_definitions("-O0 -g") # debug
+# add_definitions("-O0 -g") # debug
 
 # TODO: paramétrer avec une variable d'environnement
 add_definitions( "-DLOGLEVEL=2")

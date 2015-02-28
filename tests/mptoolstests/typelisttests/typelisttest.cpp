@@ -20,9 +20,9 @@
 #include "typelisttest.h"
 #include <cppunit/TestCaller.h>
 
-#include "mptools/typelist.h"
+#include "arccos/mptools/typelist.h"
 
-#include "test/static.h"
+#include "arccos/test/static.h"
 
 
 using namespace arccos;

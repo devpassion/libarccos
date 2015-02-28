@@ -22,8 +22,8 @@
 
 
 #include "loggingtest.h"
-#include "logging/metalogging.h"
-#include "logging/hexa.h"
+#include "arccos/logging/metalogging.h"
+#include "arccos/logging/hexa.h"
 
 
 namespace arccos

@@ -17,7 +17,7 @@
  *
  */
 
-#include "test/timereport.h"
+#include "arccos/test/timereport.h"
 
 using namespace arccos::test;
 

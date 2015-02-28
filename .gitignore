@@ -4,6 +4,7 @@
 # répertoire de build
 build
 build*
+
 #repertoire de l'EDI
 *.kdev4
 .kdev4

@@ -11,9 +11,8 @@ project(libarccos)
 
 # Add files for IDE
 FILE (GLOB_RECURSE clion_all_headers ${CMAKE_SOURCE_DIR}/*)
-ADD_CUSTOM_TARGET(all_clion
-    SOURCES ${clion_all_headers}
-)
+ADD_CUSTOM_TARGET(all_clion SOURCES ${clion_all_headers})
+
 
 include_directories( include tpl )
 
@@ -23,7 +22,7 @@ add_subdirectory( doc )
 # Headers files
 add_subdirectory(include)
 
-# template implémentations
+# template implementations
 add_subdirectory( tpl )
 
 # Tests

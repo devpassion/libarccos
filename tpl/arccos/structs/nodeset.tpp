@@ -2,11 +2,11 @@
 #include <algorithm>
 #include <cmath>
 
-#include "structs/node.h"
-#include "structs/nodeset.h"
-#include "structs/graph.h"
+#include "arccos/structs/node.h"
+#include "arccos/structs/nodeset.h"
+#include "arccos/structs/graph.h"
 
-#include "logging/metalogging.h"
+#include "arccos/logging/metalogging.h"
 
 using namespace arccos::structs;
 

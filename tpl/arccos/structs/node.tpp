@@ -19,9 +19,9 @@
 
 #include <cassert>
 
-#include "logging/metalogging.h"
+#include "arccos/logging/metalogging.h"
 
-#include "structs/graph.h"
+#include "arccos/structs/graph.h"
 
 
 using namespace arccos::structs;

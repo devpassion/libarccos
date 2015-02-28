@@ -23,7 +23,7 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestFixture.h>
 
-#include "structs/graph.h"
+#include "arccos/structs/graph.h"
 
 
 namespace arccos

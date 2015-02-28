@@ -22,7 +22,7 @@
 #include "graphtest.h"
 #include <cppunit/TestCaller.h>
 
-#include "structs/graph.h"
+#include "arccos/structs/graph.h"
 
 using namespace arccos::structs;
 

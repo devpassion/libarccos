@@ -233,11 +233,11 @@ namespace arccos
 
 
 
-#include "../../tpl/structs/graph.cpp"
-#include "../../tpl/structs/node.cpp"
-#include "../../tpl/structs/recpath.cpp"
-#include "../../tpl/structs/nodeset.cpp"
-#include "../../tpl/structs/path.cpp"
+#include "arccos/structs/graph.tpp"
+#include "arccos/structs/node.tpp"
+#include "arccos/structs/recpath.tpp"
+#include "arccos/structs/nodeset.tpp"
+#include "arccos/structs/path.tpp"
 
 #endif // ARCCOS_STRUCTS_GRAPH_H
 

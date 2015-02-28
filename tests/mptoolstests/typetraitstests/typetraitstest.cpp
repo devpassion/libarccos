@@ -20,8 +20,8 @@
 #include "typetraitstest.h"
 #include <cppunit/TestCaller.h>
 
-#include "mptools/type_traits.h"
-#include "test/static.h"
+#include "arccos/mptools/type_traits.h"
+#include "arccos/test/static.h"
 
 
 using namespace arccos;

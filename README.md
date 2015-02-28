@@ -2,6 +2,9 @@ libarccos
 =========
 
 ### A little meta programming library
+Be careful, I don't write this library for reinventing the wheel.
+Sure, if you are a specific need, it exists some good libraries for this.
+I wrote this just for my pleasure and for specific purpose.
 
 
 #### Features
@@ -12,6 +15,9 @@ libarccos
     * create compile-time interval and apply meta operations to all elements. 
 * compile-time logging
     * Define logging level at compile time ( non displayed logging informations does not produce asm code )
+* graph data structure
+    * adapted for regular update (on many game loop, for example)
+    * optimized for search shortests path on graph with fixed node number
 
     
 #### Prerequisites
@@ -23,7 +29,7 @@ libarccos
     
 #### Installation 
 
-This library just install some headers files in the include directory.
+This library just install some headers files in the include directory (in directory arccos).
 
 * $ git clone https://github.com/devpassion/libarccos
 * $ cd libarccos
@@ -39,7 +45,7 @@ Now, you can include header files like this:
 
 #### Execute tests
 
-* $ cd tests/mptoolstests && ctest
+* $ cd build/tests && ctest
 
 
 

@@ -28,7 +28,7 @@
 
 #include <vector>
 
-#include "logging/metalogging.h"
+#include "arccos/logging/metalogging.h"
 
 
 namespace arccos

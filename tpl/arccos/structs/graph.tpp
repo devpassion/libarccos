@@ -1,10 +1,10 @@
 #include <exception>
 
-#include "logging/metalogging.h"
+#include "arccos/logging/metalogging.h"
 
-#include "structs/graph.h"
-#include "structs/recpath.h"
-#include "structs/node.h"
+#include "arccos/structs/graph.h"
+#include "arccos/structs/recpath.h"
+#include "arccos/structs/node.h"
 
 using namespace arccos::structs;
 

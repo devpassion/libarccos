@@ -17,7 +17,7 @@
  *
  */
 
-#include "game/board.h"
+#include "arccos/game/board.h"
 
 using namespace arccos::game;
     

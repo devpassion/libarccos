@@ -17,7 +17,7 @@
  *
  */
 
-#include "structs/graph.h"
+#include "arccos/structs/graph.h"
 #include <cassert>
 
 using namespace arccos::structs;
